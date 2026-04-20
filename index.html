@@ -474,6 +474,31 @@ padding: 8px;
 }
 }
 </style>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAMdguz176n3WGm_AT9eSY8yAe6lkD28Bs",
+  authDomain: "shawy-cash.firebaseapp.com",
+  databaseURL: "https://shawy-cash-default-rtdb.firebaseio.com",
+  projectId: "shawy-cash",
+  storageBucket: "shawy-cash.firebasestorage.app",
+  messagingSenderId: "781651173440",
+  appId: "1:781651173440:web:3e14017f2f364745853fa5",
+  measurementId: "G-0YSJ1V45ZG"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const auth = getAuth(app);
+
+window.db = db;
+window.auth = auth;
+
+alert("🔥 Firebase شغال");
+</script>
 </head>
 
 <body>
