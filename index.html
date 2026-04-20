@@ -468,7 +468,7 @@ padding: 8px;
 <a onclick="openBalance()">💰 إضافة رصيد</a>
 <a onclick="openOrders()">📦 طلباتي</a>
 <a id="adminLink" onclick="openAdmin()" style="background:#e74c3c; display:none;">👑 لوحة الإدمن</a>
-<a onclick="logout()" style="background:#e74c3c;">🚪 تسجيل الخروج</a>
+<a onclick="logoutUser()" style="background:#e74c3c;">🚪 تسجيل الخروج</a>
 </div>
 
 <div id="overlay"></div>
@@ -478,10 +478,10 @@ padding: 8px;
 <h2>🔐 تسجيل الدخول</h2>
 <input id="emailInput" type="email" placeholder="ادخل ايميلك">
 <input type="password" id="passwordInput" placeholder="كلمة المرور">
-<button onclick="loginNow()">دخول</button>
+<button onclick="loginUser()">دخول</button>
 <div class="auth-link">
 ما عندك حساب؟
-<span onclick="showRegister()">إنشاء حساب جديد</span>
+<span onclick="showRegisterPage()">إنشاء حساب جديد</span>
 </div>
 </div>
 </div>
@@ -492,17 +492,17 @@ padding: 8px;
 <input id="regEmail" type="email" placeholder="ادخل ايميلك">
 <input type="password" id="regPassword" placeholder="كلمة المرور">
 <input type="password" id="regPasswordConfirm" placeholder="تأكيد كلمة المرور">
-<button onclick="registerNow()">إنشاء حساب</button>
+<button onclick="registerUser()">إنشاء حساب</button>
 <div class="auth-link">
 عندك حساب؟
-<span onclick="showLogin()">تسجيل الدخول</span>
+<span onclick="showLoginPage()">تسجيل الدخول</span>
 </div>
 </div>
 </div>
 
 <div id="home" style="display:none">
 <div class="header">
-<div onclick="toggle()" style="cursor:pointer;font-size:20px;">☰</div>
+<div onclick="toggleSidebar()" style="cursor:pointer;font-size:20px;">☰</div>
 <div id="balanceText"></div>
 </div>
 <div class="grid" id="appsGrid"></div>
@@ -569,13 +569,11 @@ padding: 8px;
 <div>الاسم: اسمك</div>
 </div>
 <p style="text-align:center;color:#2ecc71;font-weight:bold;margin:15px 0 10px 0;">💰 أدخل المبلغ</p>
-<input type="number" id="sypAmount" placeholder="أدخل المبلغ بالليرة السورية" step="0.01" oninput="convertCurrency('syp')" style="width:90%;margin:5px auto;padding:10px;border:1px solid #ddd;border-radius:5px;display:block;box-sizing:border-box;">
-
+<input type="number" id="sypAmount" placeholder="أدخل المبلغ بالليرة السورية" step="0.01" oninput="convertCurrency('syp')">
 <div class="usd-display" style="margin:15px auto;width:90%;">
 <p>المبلغ بالدولار: $<span id="sypUSD">0.00</span></p>
 </div>
-
-<button onclick="sendFormWithImage('syp')" style="width:90%;margin:15px auto;display:block;">إرسال</button>
+<button onclick="submitPayment('syp')" style="width:90%;margin:15px auto;display:block;">إرسال</button>
 </div>
 </div>
 
@@ -587,13 +585,11 @@ padding: 8px;
 <div>الاسم: اسمك</div>
 </div>
 <p style="text-align:center;color:#2ecc71;font-weight:bold;margin:15px 0 10px 0;">💰 أدخل المبلغ</p>
-<input type="number" id="usdAmount" placeholder="أدخل المبلغ بالدولار" step="0.01" oninput="convertCurrency('usd')" style="width:90%;margin:5px auto;padding:10px;border:1px solid #ddd;border-radius:5px;display:block;box-sizing:border-box;">
-
+<input type="number" id="usdAmount" placeholder="أدخل المبلغ بالدولار" step="0.01" oninput="convertCurrency('usd')">
 <div class="usd-display" style="margin:15px auto;width:90%;">
 <p>المبلغ بالدولار: $<span id="usdUSD">0.00</span></p>
 </div>
-
-<button onclick="sendFormWithImage('usd')" style="width:90%;margin:15px auto;display:block;">إرسال</button>
+<button onclick="submitPayment('usd')" style="width:90%;margin:15px auto;display:block;">إرسال</button>
 </div>
 </div>
 
@@ -605,13 +601,11 @@ padding: 8px;
 <div>الاسم: اسمك</div>
 </div>
 <p style="text-align:center;color:#2ecc71;font-weight:bold;margin:15px 0 10px 0;">💰 أدخل المبلغ</p>
-<input type="number" id="bankAmount" placeholder="أدخل المبلغ بالليرة التركية" step="0.01" oninput="convertCurrency('bank')" style="width:90%;margin:5px auto;padding:10px;border:1px solid #ddd;border-radius:5px;display:block;box-sizing:border-box;">
-
+<input type="number" id="bankAmount" placeholder="أدخل المبلغ بالليرة التركية" step="0.01" oninput="convertCurrency('bank')">
 <div class="usd-display" style="margin:15px auto;width:90%;">
 <p>المبلغ بالدولار: $<span id="bankUSD">0.00</span></p>
 </div>
-
-<button onclick="sendFormWithImage('bank')" style="width:90%;margin:15px auto;display:block;">إرسال</button>
+<button onclick="submitPayment('bank')" style="width:90%;margin:15px auto;display:block;">إرسال</button>
 </div>
 </div>
 
@@ -633,20 +627,17 @@ padding: 8px;
   <div class="modal-content" style="width:80%;max-width:400px;">
     <h3>✅ تم استلام طلبك</h3>
     <p>سيتم تجهيز طلبك خلال دقائق</p>
-    <button onclick="goWhatsApp()">📞 استلام الكود</button>
-    <br><br>
     <button onclick="closePopup()" style="background:#ccc;color:black;">إغلاق</button>
   </div>
 </div>
 
-<script type="module">
-// ===== استيراد Firebase =====
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
-import { getDatabase, ref, set, get, on, push, remove } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-database.js";
-import { getStorage, ref as storageRef, uploadBytes, getBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-storage.js";
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
 
-// ===== إعدادات Firebase =====
+<script>
+// إعدادات Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyAMdguz176n3WGm_AT9eSY8yAe6lkD28Bs",
   authDomain: "shawy-cash.firebaseapp.com",
@@ -654,23 +645,24 @@ const firebaseConfig = {
   projectId: "shawy-cash",
   storageBucket: "shawy-cash.firebasestorage.app",
   messagingSenderId: "781651173440",
-  appId: "1:781651173440:web:3e14017f2f364745853fa5",
+  appId: "1:781651173440:web:3e14017f2f364745853fa5"
 };
 
 // تهيئة Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
-const storage = getStorage(app);
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.database();
 
-// ===== الثوابت =====
+console.log("✅ Firebase تم التهيئة");
+
+// البيانات
 const EXCHANGE_RATES = {
   syp: 134,
   usd: 1,
   bank: 46
 };
 
-const apps=[
+const apps = [
   {name:"يا أهلا",img:"https://i.ibb.co/G307spDQ/image.png",packs:[{amount:2500,price:5},{amount:5200,price:10},{amount:10600,price:20},{amount:27000,price:50},{amount:40000,price:75},{amount:52500,price:100}]},
   {name:"Soltchen",img:"https://i.ibb.co/TMqz7RhY/image.jpg",packs:[{amount:2500,price:5},{amount:5200,price:10},{amount:10600,price:20},{amount:27000,price:50},{amount:40000,price:75},{amount:52500,price:100}]},
   {name:"Sugo",img:"https://i.ibb.co/qVF1fnS/image.jpg",packs:[{amount:2500,price:5}]},
@@ -680,244 +672,231 @@ const apps=[
   {name:"4fun",img:"https://i.ibb.co/7tJjGrsn/image.jpg",packs:[{amount:2500,price:5}]}
 ];
 
-let selectedMethod="",selectedPrice=0,selectedApp="",selectedAmount=0;
+let selectedApp = "", selectedAmount = 0, selectedPrice = 0;
 
 // ===== دوال المصادقة =====
-window.showRegister = function(){
-  console.log("تحويل للتسجيل");
-  document.getElementById("loginPage").style.display="none";
-  document.getElementById("registerPage").style.display="flex";
-};
+function registerUser() {
+  const email = document.getElementById("regEmail").value.trim();
+  const password = document.getElementById("regPassword").value.trim();
+  const passwordConfirm = document.getElementById("regPasswordConfirm").value.trim();
 
-window.showLogin = function(){
-  console.log("تحويل للدخول");
-  document.getElementById("registerPage").style.display="none";
-  document.getElementById("loginPage").style.display="flex";
-};
-
-window.registerNow = function(){
-  console.log("محاولة التسجيل");
-  let email=document.getElementById("regEmail").value.trim();
-  let password=document.getElementById("regPassword").value.trim();
-  let passwordConfirm=document.getElementById("regPasswordConfirm").value.trim();
-
-  if(!email||!password||!passwordConfirm) {
+  if (!email || !password || !passwordConfirm) {
     alert("❌ ادخل جميع الحقول");
     return;
   }
-  if(password!==passwordConfirm) {
+
+  if (password !== passwordConfirm) {
     alert("❌ كلمات المرور غير متطابقة");
     return;
   }
-  if(password.length<6) {
+
+  if (password.length < 6) {
     alert("❌ كلمة المرور يجب أن تكون 6 أحرف على الأقل");
     return;
   }
 
-  createUserWithEmailAndPassword(auth, email, password)
+  auth.createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
-      console.log("تم إنشاء المستخدم:", userCredential.user.uid);
-      set(ref(db, 'users/' + userCredential.user.uid), {
+      db.ref('users/' + userCredential.user.uid).set({
         email: email,
         balance: 0,
         createdAt: new Date().toLocaleString('ar-EG')
       });
-      
       alert("✅ تم إنشاء الحساب بنجاح!");
-      document.getElementById("regEmail").value="";
-      document.getElementById("regPassword").value="";
-      document.getElementById("regPasswordConfirm").value="";
-      showLogin();
+      document.getElementById("regEmail").value = "";
+      document.getElementById("regPassword").value = "";
+      document.getElementById("regPasswordConfirm").value = "";
+      showLoginPage();
     })
     .catch((error) => {
-      console.error("خطأ في التسجيل:", error);
       alert("❌ خطأ: " + error.message);
     });
-};
+}
 
-window.loginNow = function(){
-  console.log("محاولة الدخول");
-  let email=document.getElementById("emailInput").value.trim();
-  let password=document.getElementById("passwordInput").value.trim();
+function loginUser() {
+  const email = document.getElementById("emailInput").value.trim();
+  const password = document.getElementById("passwordInput").value.trim();
 
-  if(!email||!password) {
+  if (!email || !password) {
     alert("❌ ادخل الإيميل وكلمة المرور");
     return;
   }
 
-  signInWithEmailAndPassword(auth, email, password)
+  auth.signInWithEmailAndPassword(email, password)
     .then((userCredential) => {
-      console.log("تم الدخول:", userCredential.user.email);
-      document.getElementById("loginPage").style.display="none";
-      document.getElementById("home").style.display="block";
+      document.getElementById("loginPage").style.display = "none";
+      document.getElementById("home").style.display = "block";
       loadApps();
       updateBalance();
       checkAdminStatus();
     })
     .catch((error) => {
-      console.error("خطأ في الدخول:", error);
       alert("❌ خطأ: " + error.message);
     });
-};
-
-window.logout = function(){
-  signOut(auth).then(() => {
-    document.getElementById("home").style.display="none";
-    document.getElementById("adminPage").style.display="none";
-    document.getElementById("ordersPage").style.display="none";
-    document.getElementById("loginPage").style.display="flex";
-    document.getElementById("emailInput").value="";
-    document.getElementById("passwordInput").value="";
-  });
-};
-
-function getCurrentUser(){
-  return auth.currentUser;
 }
 
-window.checkAdminStatus = function(){
-  let user = getCurrentUser();
-  if(!user) return;
-  
-  on(ref(db, 'users/' + user.uid + '/isAdmin'), (snapshot) => {
-    let isAdmin = snapshot.val() || false;
-    document.getElementById("adminLink").style.display = isAdmin ? "block" : "none";
-  });
-};
+function logoutUser() {
+  auth.signOut()
+    .then(() => {
+      document.getElementById("home").style.display = "none";
+      document.getElementById("adminPage").style.display = "none";
+      document.getElementById("loginPage").style.display = "flex";
+      document.getElementById("emailInput").value = "";
+      document.getElementById("passwordInput").value = "";
+    });
+}
+
+function showLoginPage() {
+  document.getElementById("registerPage").style.display = "none";
+  document.getElementById("loginPage").style.display = "flex";
+}
+
+function showRegisterPage() {
+  document.getElementById("loginPage").style.display = "none";
+  document.getElementById("registerPage").style.display = "flex";
+}
+
+// ===== التحقق من حالة الدخول =====
+auth.onAuthStateChanged(function(user) {
+  if (user) {
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("home").style.display = "block";
+    loadApps();
+    updateBalance();
+    checkAdminStatus();
+  } else {
+    document.getElementById("home").style.display = "none";
+    document.getElementById("adminPage").style.display = "none";
+    document.getElementById("loginPage").style.display = "flex";
+  }
+});
 
 // ===== دوال الرصيد =====
-window.updateBalance = function(){
-  let user = getCurrentUser();
-  if(!user) return;
+function updateBalance() {
+  const user = auth.currentUser;
+  if (!user) return;
 
-  on(ref(db, 'users/' + user.uid + '/balance'), (snapshot) => {
-    let balance = snapshot.val() || 0;
+  db.ref('users/' + user.uid + '/balance').on('value', (snapshot) => {
+    const balance = snapshot.val() || 0;
     document.getElementById("balanceText").innerText = "الرصيد: $" + parseFloat(balance).toFixed(2);
   });
-};
+}
 
-function getBalance(){
-  return new Promise((resolve) => {
-    let user = getCurrentUser();
-    if(!user) return resolve(0);
-    
-    get(ref(db, 'users/' + user.uid + '/balance')).then((snapshot) => {
-      resolve(snapshot.val() || 0);
-    });
+function checkAdminStatus() {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  db.ref('users/' + user.uid + '/isAdmin').on('value', (snapshot) => {
+    const isAdmin = snapshot.val() || false;
+    document.getElementById("adminLink").style.display = isAdmin ? "block" : "none";
   });
 }
 
 // ===== دوال التنقل =====
-window.hideAll = function(){
-  ["home","appPage","balancePage","shamSYP","shamUSD","bankPage","ordersPage","adminPage"].forEach(id=>{
-    let el=document.getElementById(id);
-    el.classList.remove("show");
-    el.style.display="none";
+function hideAll() {
+  ["home", "appPage", "balancePage", "shamSYP", "shamUSD", "bankPage", "ordersPage", "adminPage"].forEach(id => {
+    document.getElementById(id).style.display = "none";
   });
   document.getElementById("sidebar").classList.remove("open");
-  document.getElementById("overlay").style.display="none";
-};
+  document.getElementById("overlay").style.display = "none";
+}
 
-window.goHome = function(){
+function goHome() {
   hideAll();
-  document.getElementById("home").style.display="block";
-};
+  document.getElementById("home").style.display = "block";
+}
 
-window.openAdmin = function(){
+function openAdmin() {
   hideAll();
-  document.getElementById("adminPage").style.display="block";
+  document.getElementById("adminPage").style.display = "block";
   updateAdminStats();
-};
+}
 
-window.openBalance = function(){
+function openBalance() {
   hideAll();
-  document.getElementById("balancePage").style.display="block";
-};
+  document.getElementById("balancePage").style.display = "block";
+}
 
-window.openOrders = function(){
+function openOrders() {
   hideAll();
-  let ordersPage=document.getElementById("ordersPage");
-  ordersPage.classList.add("show");
-  ordersPage.style.display="flex";
+  document.getElementById("ordersPage").style.display = "flex";
   loadOrders();
-};
+}
 
-window.openShamSYP = function(){
+function openShamSYP() {
   hideAll();
-  document.getElementById("shamSYP").style.display="block";
-  selectedMethod="شام كاش سوري";
-};
+  document.getElementById("shamSYP").style.display = "block";
+}
 
-window.openShamUSD = function(){
+function openShamUSD() {
   hideAll();
-  document.getElementById("shamUSD").style.display="block";
-  selectedMethod="شام كاش دولار";
-};
+  document.getElementById("shamUSD").style.display = "block";
+}
 
-window.openBank = function(){
+function openBank() {
   hideAll();
-  document.getElementById("bankPage").style.display="block";
-  selectedMethod="زراعات بنك";
-};
+  document.getElementById("bankPage").style.display = "block";
+}
 
-window.toggle = function(){
+function toggleSidebar() {
   document.getElementById("sidebar").classList.toggle("open");
-  document.getElementById("overlay").style.display=document.getElementById("sidebar").classList.contains("open")?"block":"none";
-};
+  document.getElementById("overlay").style.display = document.getElementById("sidebar").classList.contains("open") ? "block" : "none";
+}
 
-// ===== دوال التطبيقات والتسوق =====
-window.loadApps = function(){
-  let html="";
-  apps.forEach((app,i)=>{
-    html+=`<div class="card" onclick="openApp(${i})"><img src="${app.img}" alt="${app.name}"><div><strong>${app.name}</strong></div></div>`;
+// ===== دوال التطبيقات =====
+function loadApps() {
+  let html = "";
+  apps.forEach((app, i) => {
+    html += `<div class="card" onclick="openApp(${i})"><img src="${app.img}" alt="${app.name}"><div><strong>${app.name}</strong></div></div>`;
   });
-  document.getElementById("appsGrid").innerHTML=html;
-};
+  document.getElementById("appsGrid").innerHTML = html;
+}
 
-window.openApp = function(i){
+function openApp(i) {
   hideAll();
-  document.getElementById("appPage").style.display="block";
-  document.getElementById("title").innerText=apps[i].name;
-  let html="<div class='pack-grid'>";
-  apps[i].packs.forEach(p=>{
-    html+=`<div class="pack"><div>${p.amount} 💎</div><div>$${p.price}</div><button onclick="buy('${apps[i].name}', ${p.amount}, ${p.price})">شراء</button></div>`;
+  document.getElementById("appPage").style.display = "block";
+  document.getElementById("title").innerText = apps[i].name;
+  let html = "<div class='pack-grid'>";
+  apps[i].packs.forEach(p => {
+    html += `<div class="pack"><div>${p.amount} 💎</div><div>$${p.price}</div><button onclick="buy('${apps[i].name}', ${p.amount}, ${p.price})">شراء</button></div>`;
   });
-  html+="</div>";
-  document.getElementById("packs").innerHTML=html;
-};
+  html += "</div>";
+  document.getElementById("packs").innerHTML = html;
+}
 
-window.buy = function(app,amount,price){
-  selectedApp=app;
-  selectedAmount=amount;
-  selectedPrice=price;
-  document.getElementById("modal").style.display="flex";
-};
+function buy(app, amount, price) {
+  selectedApp = app;
+  selectedAmount = amount;
+  selectedPrice = price;
+  document.getElementById("modal").style.display = "flex";
+}
 
-window.closeModal = function(){
-  document.getElementById("modal").style.display="none";
-  document.getElementById("userId").value="";
-};
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
+  document.getElementById("userId").value = "";
+}
 
-window.confirmBuy = function(){
-  let userId=document.getElementById("userId").value.trim();
-  let user = getCurrentUser();
-  
-  if(!userId) {
+function confirmBuy() {
+  const userId = document.getElementById("userId").value.trim();
+  const user = auth.currentUser;
+
+  if (!userId) {
     alert("⚠️ لازم تدخل ID");
     return;
   }
-  
-  getBalance().then(balance => {
-    if(balance<selectedPrice) {
+
+  db.ref('users/' + user.uid + '/balance').once('value', (snapshot) => {
+    const balance = snapshot.val() || 0;
+    if (balance < selectedPrice) {
       alert("❌ رصيدك لا يكفي");
       return;
     }
-    
-    let newBalance = balance - selectedPrice;
-    set(ref(db, 'users/' + user.uid + '/balance'), newBalance);
-    
-    let orderId = push(ref(db, 'orders')).key;
-    set(ref(db, 'orders/' + orderId), {
+
+    const newBalance = balance - selectedPrice;
+    db.ref('users/' + user.uid + '/balance').set(newBalance);
+
+    const orderId = db.ref('orders').push().key;
+    db.ref('orders/' + orderId).set({
       userId: user.uid,
       email: user.email,
       app: selectedApp,
@@ -930,7 +909,7 @@ window.confirmBuy = function(){
       timestamp: new Date().getTime()
     });
 
-    set(ref(db, 'users/' + user.uid + '/orders/' + orderId), {
+    db.ref('users/' + user.uid + '/orders/' + orderId).set({
       app: selectedApp,
       amount: selectedAmount,
       price: selectedPrice,
@@ -938,225 +917,189 @@ window.confirmBuy = function(){
       time: new Date().toLocaleTimeString('ar-EG'),
       completed: false
     });
-    
+
     alert("✅ تم تأكيد الطلب!");
     closeModal();
     updateBalance();
   });
-};
+}
 
 // ===== دوال الطلبات =====
-window.loadOrders = function(){
-  let user = getCurrentUser();
-  if(!user){
-    document.getElementById("ordersList").innerHTML='<div style="text-align:center;padding:40px;"><p style="font-size:18px;">❌ لا يوجد مستخدم</p></div>';
+function loadOrders() {
+  const user = auth.currentUser;
+  if (!user) {
+    document.getElementById("ordersList").innerHTML = '<div style="text-align:center;padding:40px;"><p>❌ لا يوجد مستخدم</p></div>';
     return;
   }
 
-  on(ref(db, 'users/' + user.uid + '/orders'), (snapshot) => {
-    let orders = snapshot.val() || {};
-    let html='<h3>طلباتي</h3>';
-    
-    if(Object.keys(orders).length === 0){
-      html+='<div style="text-align:center;padding:40px;"><p style="font-size:18px;">📭 لا يوجد طلبات</p></div>';
+  db.ref('users/' + user.uid + '/orders').on('value', (snapshot) => {
+    const orders = snapshot.val() || {};
+    let html = '<h3>طلباتي</h3>';
+
+    if (Object.keys(orders).length === 0) {
+      html += '<div style="text-align:center;padding:40px;"><p>📭 لا يوجد طلبات</p></div>';
     } else {
-      Object.values(orders).forEach(o=>{
-        let statusText=o.completed?"✅ تم التنفيذ":"⏳ قيد الانتظار";
-        let statusClass=o.completed?"completed":"";
-        html+=`<div class="order-item ${statusClass}"><h3>${o.app}</h3><p><strong>الكمية:</strong> ${o.amount} 💎</p><p><strong>السعر:</strong> $${o.price}</p><p><strong>📅 التاريخ:</strong> ${o.date || o.time}</p><p><strong>⏰ الوقت:</strong> ${o.time}</p><div class="status ${o.completed?"completed":"pending"}"><strong>${statusText}</strong></div></div>`;
+      Object.values(orders).forEach(o => {
+        const statusText = o.completed ? "✅ تم التنفيذ" : "⏳ قيد الانتظار";
+        const statusClass = o.completed ? "completed" : "";
+        html += `<div class="order-item ${statusClass}"><h3>${o.app}</h3><p><strong>الكمية:</strong> ${o.amount} 💎</p><p><strong>السعر:</strong> $${o.price}</p><p><strong>التاريخ:</strong> ${o.date}</p><p><strong>الوقت:</strong> ${o.time}</p><div class="status ${statusClass}"><strong>${statusText}</strong></div></div>`;
       });
     }
-    document.getElementById("ordersList").innerHTML=html;
+    document.getElementById("ordersList").innerHTML = html;
   });
-};
+}
 
 // ===== دوال الإدارة =====
-window.updateAdminStats = function(){
-  get(ref(db, 'users')).then((snapshot) => {
-    let users = snapshot.val() || {};
-    let totalUsers = Object.keys(users).length;
-    document.getElementById("totalUsers").innerText = totalUsers;
+function updateAdminStats() {
+  db.ref('users').once('value', (snapshot) => {
+    const users = snapshot.val() || {};
+    document.getElementById("totalUsers").innerText = Object.keys(users).length;
   });
 
-  get(ref(db, 'orders')).then((snapshot) => {
-    let orders = snapshot.val() || {};
-    let totalOrders = Object.keys(orders).length;
+  db.ref('orders').once('value', (snapshot) => {
+    const orders = snapshot.val() || {};
     let totalSales = 0;
-    
     Object.values(orders).forEach(o => {
       totalSales += o.price || 0;
     });
-    
-    document.getElementById("totalOrders").innerText = totalOrders;
+    document.getElementById("totalOrders").innerText = Object.keys(orders).length;
     document.getElementById("totalSales").innerText = totalSales.toFixed(2);
   });
-};
+}
 
-window.showAllUsers = function(){
-  get(ref(db, 'users')).then((snapshot) => {
-    let users = snapshot.val() || {};
-    let html='<h3>👥 إدارة المستخدمين والأرصدة</h3>';
-    
+function showAllUsers() {
+  db.ref('users').once('value', (snapshot) => {
+    const users = snapshot.val() || {};
+    let html = '<h3>👥 المستخدمين</h3>';
+
     Object.entries(users).forEach(([uid, userData]) => {
-      let balance = userData.balance || 0;
-      html+=`<div class="balance-modal"><h4>👤 ${userData.email}</h4><p><strong>💰 الرصيد الحالي:</strong> $${parseFloat(balance).toFixed(2)}</p><div class="balance-controls"><input type="number" id="amount_${uid}" placeholder="المبلغ" step="0.01"><button onclick="addBalance('${uid}', '${userData.email}')">➕ إضافة</button><button onclick="subtractBalance('${uid}', '${userData.email}')" style="background:#e74c3c;">➖ طرح</button></div></div>`;
+      const balance = userData.balance || 0;
+      html += `<div class="balance-modal"><h4>${userData.email}</h4><p>الرصيد: $${balance.toFixed(2)}</p><div class="balance-controls"><input type="number" id="amount_${uid}" placeholder="المبلغ" step="0.01"><button onclick="addBalance('${uid}')">➕ إضافة</button><button onclick="subtractBalance('${uid}')" style="background:#e74c3c;">➖ طرح</button></div></div>`;
     });
-    
-    html+='<br><button onclick="goBack()" style="width:100%;padding:10px;background:#ccc;color:black;">← رجوع</button>';
-    document.getElementById("adminDetails").innerHTML=html;
-    document.getElementById("adminDetails").style.display="block";
-  });
-};
 
-window.addBalance = function(uid, email){
-  let amount=parseFloat(document.getElementById("amount_"+uid).value);
-  if(!amount||amount<=0) {
+    html += '<br><button onclick="goBack()" style="width:100%;padding:10px;background:#ccc;color:black;">← رجوع</button>';
+    document.getElementById("adminDetails").innerHTML = html;
+    document.getElementById("adminDetails").style.display = "block";
+  });
+}
+
+function addBalance(uid) {
+  const amount = parseFloat(document.getElementById("amount_" + uid).value);
+  if (!amount || amount <= 0) {
     alert("❌ ادخل مبلغ صحيح");
     return;
   }
 
-  get(ref(db, 'users/' + uid + '/balance')).then((snapshot) => {
-    let currentBalance = snapshot.val() || 0;
-    let newBalance = currentBalance + amount;
-    set(ref(db, 'users/' + uid + '/balance'), newBalance);
-    alert("✅ تم إضافة $"+amount+" للمستخدم!");
+  db.ref('users/' + uid + '/balance').once('value', (snapshot) => {
+    const currentBalance = snapshot.val() || 0;
+    const newBalance = currentBalance + amount;
+    db.ref('users/' + uid + '/balance').set(newBalance);
+    alert("✅ تم إضافة $" + amount);
     showAllUsers();
   });
-};
+}
 
-window.subtractBalance = function(uid, email){
-  let amount=parseFloat(document.getElementById("amount_"+uid).value);
-  if(!amount||amount<=0) {
+function subtractBalance(uid) {
+  const amount = parseFloat(document.getElementById("amount_" + uid).value);
+  if (!amount || amount <= 0) {
     alert("❌ ادخل مبلغ صحيح");
     return;
   }
 
-  get(ref(db, 'users/' + uid + '/balance')).then((snapshot) => {
-    let currentBalance = snapshot.val() || 0;
-    if(amount>currentBalance) {
-      alert("❌ المبلغ أكبر من الرصيد الحالي!");
+  db.ref('users/' + uid + '/balance').once('value', (snapshot) => {
+    const currentBalance = snapshot.val() || 0;
+    if (amount > currentBalance) {
+      alert("❌ المبلغ أكبر من الرصيد!");
       return;
     }
-    
-    let newBalance = currentBalance - amount;
-    set(ref(db, 'users/' + uid + '/balance'), newBalance);
-    alert("✅ تم طرح $"+amount+" من المستخدم!");
+    const newBalance = currentBalance - amount;
+    db.ref('users/' + uid + '/balance').set(newBalance);
+    alert("✅ تم طرح $" + amount);
     showAllUsers();
   });
-};
+}
 
-window.showAllOrders = function(){
-  get(ref(db, 'orders')).then((snapshot) => {
-    let orders = snapshot.val() || {};
-    let html='<h3>جميع الطلبات</h3><div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>المستخدم</th><th>التطبيق</th><th>السعر</th><th>التاريخ</th><th>الحالة</th><th>الإجراء</th></tr></thead><tbody>';
-    
+function showAllOrders() {
+  db.ref('orders').once('value', (snapshot) => {
+    const orders = snapshot.val() || {};
+    let html = '<h3>جميع الطلبات</h3><table class="admin-table"><thead><tr><th>المستخدم</th><th>التطبيق</th><th>السعر</th><th>التاريخ</th><th>الحالة</th><th>الإجراء</th></tr></thead><tbody>';
+
     Object.entries(orders).forEach(([orderId, order]) => {
-      let status=order.completed?"✅ منفذ":"⏳ قيد الانتظار";
-      let btn=order.completed?"":`<button onclick="completeOrder('${orderId}')" style="background:#2ecc71; padding:10px 15px; border-radius:6px; cursor:pointer; white-space: nowrap;">✅ تنفيذ</button>`;
-      html+=`<tr><td>${order.email}</td><td>${order.app}</td><td>$${order.price}</td><td>${order.date}</td><td>${status}</td><td>${btn}</td></tr>`;
+      const status = order.completed ? "✅ منفذ" : "⏳ قيد الانتظار";
+      const btn = order.completed ? "" : `<button onclick="completeOrder('${orderId}')" style="background:#2ecc71; padding:10px 15px;">✅ تنفيذ</button>`;
+      html += `<tr><td>${order.email}</td><td>${order.app}</td><td>$${order.price}</td><td>${order.date}</td><td>${status}</td><td>${btn}</td></tr>`;
     });
-    
-    html+='</tbody></table></div><br><button onclick="goBack()" style="width:100%;padding:10px;background:#ccc;color:black;">← رجوع</button>';
-    document.getElementById("adminDetails").innerHTML=html;
-    document.getElementById("adminDetails").style.display="block";
-  });
-};
 
-window.completeOrder = function(orderId){
-  set(ref(db, 'orders/' + orderId + '/completed'), true);
+    html += '</tbody></table><br><button onclick="goBack()" style="width:100%;padding:10px;background:#ccc;color:black;">← رجوع</button>';
+    document.getElementById("adminDetails").innerHTML = html;
+    document.getElementById("adminDetails").style.display = "block";
+  });
+}
+
+function completeOrder(orderId) {
+  db.ref('orders/' + orderId + '/completed').set(true);
   alert("✅ تم تنفيذ الطلب!");
   showAllOrders();
-};
+}
 
-window.goBack = function(){
-  document.getElementById("adminDetails").style.display="none";
+function goBack() {
+  document.getElementById("adminDetails").style.display = "none";
   updateAdminStats();
-};
+}
 
-// ===== دوال تحويل العملات =====
-window.convertCurrency = function(type){
-  let amount = 0;
-  let resultSpan = '';
-  
-  if(type === 'syp'){
+// ===== دوال العملات =====
+function convertCurrency(type) {
+  let amount = 0, resultSpan = '';
+
+  if (type === 'syp') {
     amount = parseFloat(document.getElementById("sypAmount").value) || 0;
     resultSpan = 'sypUSD';
-  } else if(type === 'usd'){
+  } else if (type === 'usd') {
     amount = parseFloat(document.getElementById("usdAmount").value) || 0;
     resultSpan = 'usdUSD';
-  } else if(type === 'bank'){
+  } else if (type === 'bank') {
     amount = parseFloat(document.getElementById("bankAmount").value) || 0;
     resultSpan = 'bankUSD';
   }
-  
-  let usdAmount = amount / EXCHANGE_RATES[type];
-  document.getElementById(resultSpan).innerText = usdAmount.toFixed(2);
-};
 
-// ===== دوال الصور والطلبات =====
-window.sendFormWithImage = function(type) {
-  let amountInput, imageInput, method;
-  
-  if(type === 'syp') {
+  const usdAmount = amount / EXCHANGE_RATES[type];
+  document.getElementById(resultSpan).innerText = usdAmount.toFixed(2);
+}
+
+// ===== دوال الدفع =====
+function submitPayment(type) {
+  let amountInput, method;
+
+  if (type === 'syp') {
     amountInput = document.getElementById("sypAmount");
-    imageInput = document.getElementById("sypImage");
     method = "شام كاش سوري";
-  } else if(type === 'usd') {
+  } else if (type === 'usd') {
     amountInput = document.getElementById("usdAmount");
-    imageInput = document.getElementById("usdImage");
     method = "شام كاش دولار";
-  } else if(type === 'bank') {
+  } else if (type === 'bank') {
     amountInput = document.getElementById("bankAmount");
-    imageInput = document.getElementById("bankImage");
     method = "زراعات بنك";
   }
-  
-  let amount = parseFloat(amountInput.value);
-  
-  if(!amount || amount <= 0) {
-    return alert("⚠️ الرجاء إدخال مبلغ صحيح");
+
+  const amount = parseFloat(amountInput.value);
+  if (!amount || amount <= 0) {
+    alert("⚠️ أدخل مبلغ صحيح");
+    return;
   }
-  
-  if(!imageInput.files || imageInput.files.length === 0) {
-    return alert("⚠️ الرجاء اختيار صورة الحوالة");
-  }
-  
-  let file = imageInput.files[0];
-  let user = getCurrentUser();
-  let username = user?.email || "غير معروف";
-  
-  alert("✅ تم إرسال طلب الشحن! سيتم التحقق منه قريباً");
+
+  alert("✅ تم إرسال طلب الدفع! سيتم التحقق منه قريباً");
   amountInput.value = "";
-  imageInput.value = "";
+}
+
+function closePopup() {
+  document.getElementById("successPopup").style.display = "none";
+}
+
+// معالج Overlay
+document.getElementById("overlay").onclick = function() {
+  document.getElementById("sidebar").classList.remove("open");
+  document.getElementById("overlay").style.display = "none";
 };
-
-window.closePopup = function(){
-  document.getElementById("successPopup").style.display="none";
-};
-
-window.goWhatsApp = function(){
-  let phone="966XXXXXXXXX";
-  let message="مرحباً، أنا طلبت شحن رصيد";
-  let url="https://wa.me/"+phone+"?text="+encodeURIComponent(message);
-  window.open(url,"_blank");
-};
-
-// ===== معالجات الأحداث =====
-document.addEventListener('DOMContentLoaded', function() {
-  console.log("تم تحميل الصفحة");
-  
-  // التعامل مع Overlay
-  let overlay=document.getElementById("overlay");
-  let sidebar=document.getElementById("sidebar");
-  if(overlay) {
-    overlay.onclick=()=>{
-      sidebar.classList.remove("open");
-      overlay.style.display="none";
-    };
-  }
-
-  document.getElementById("successPopup").style.display="none";
-});
 </script>
 
 </body>
